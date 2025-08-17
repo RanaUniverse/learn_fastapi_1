@@ -12,7 +12,12 @@ def read_root():
 
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: Union[str, None] = None) -> dict[str, int | str | None]:
+    if q is None:
+        return_query = None
+    else:
+        return_query = q.upper()
+
     return {
         "item_id": item_id,
-        "q": q,
+        "query": return_query,
     }
