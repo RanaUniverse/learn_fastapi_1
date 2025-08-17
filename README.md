@@ -2,6 +2,15 @@ i wnated to start learning fastapi library from beginning.
 
 https://fastapi.tiangolo.com/learn/
 
+
+## How i am checking this repo?
+
+after i do some code changes i need to keep remember to activate my uv's environment, and then run the below command,
+```
+fastapi dev main.py
+```
+
+
 ## How i started the repo?
 
 ```
