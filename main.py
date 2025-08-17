@@ -5,6 +5,9 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 
 
+from my_modules.need_extra import current_indian_time
+
+
 app = FastAPI()
 
 
@@ -26,12 +29,18 @@ def read_item(item_id: int, q: Union[str, None] = None) -> dict[str, int | str |
     else:
         return_query = q.upper()
 
+    now_time = current_indian_time().strftime("%Y-%m-%d %H:%M:%S")
+
     return {
         "item_id": item_id,
         "query": return_query,
+        "processing_time": now_time,
     }
 
 
 @app.put("/items/{item_id}")
 def update_item(item_id: int, item: Item) -> dict[str, str | int]:
-    return {"item_name": item.name, "item_id": item_id}
+    return {
+        "item_name": item.name,
+        "item_id": item_id,
+    }
