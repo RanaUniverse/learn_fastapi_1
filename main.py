@@ -28,6 +28,23 @@ fake_items_db = [
 ]
 
 
+@app.get("/users/{user_id}/items/{item_id}")
+async def read_user_item(
+    user_id: int,
+    item_id: str,
+    q: str | None = None,
+    short: bool = False,
+):
+    item: dict[str, str | int] = {"item_id": item_id.upper(), "owner_id": user_id}
+    if q:
+        item.update({"q": q.upper()})
+    if not short:
+        item.update(
+            {"description": "This is an amazing item that has a logn description."}
+        )
+    return item
+
+
 @app.get("/items/")
 async def read_item(skip: int = 0, limit: int = 10):
     return fake_items_db[skip : skip + limit]
