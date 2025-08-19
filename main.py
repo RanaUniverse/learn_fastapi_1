@@ -1,6 +1,10 @@
 from enum import Enum
 
+
 from fastapi import FastAPI
+
+
+from my_modules.need_extra import current_indian_time
 
 app = FastAPI()
 
@@ -15,9 +19,18 @@ class ModelName(str, Enum):
 app = FastAPI()
 
 
+def a_big_work():
+    for i in range(9999):
+        print(i)
+
+
 @app.get("/files/{file_path:path}")
 async def read_file(file_path: str):
-    return {"file_path": file_path.upper()}
+    a_big_work()
+    return {
+        "file_path": file_path.upper(),
+        "execution_time": current_indian_time().strftime("%Y-%m-%d %H:%M:%S"),
+    }
 
 
 @app.get("/models/{model_name}")
