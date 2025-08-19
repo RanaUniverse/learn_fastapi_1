@@ -29,7 +29,7 @@ def read_item(item_id: int, q: Union[str, None] = None) -> dict[str, int | str |
     else:
         return_query = q.upper()
 
-    now_time = current_indian_time().strftime("%Y-%m-%d %H:%M:%S")
+    now_time = current_indian_time().strftime("%Y-%m-%d %H:%M:%S (IST)")
 
     return {
         "item_id": item_id,
