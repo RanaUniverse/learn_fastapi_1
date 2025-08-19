@@ -8,6 +8,14 @@ https://fastapi.tiangolo.com/learn/
 after i do some code changes i need to keep remember to activate my uv's environment, and then run the below command,
 ```
 fastapi dev main.py
+
+
+uv run uvicorn main:app --host "0.0.0.0"
+
+
+IP=$(hostname -I | awk '{print $1}')
+uvicorn main:app --host 0.0.0.0 --port 8000 --reload & echo "Your app is running at http://$IP:8000"
+
 ```
 
 
