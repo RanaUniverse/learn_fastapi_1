@@ -15,6 +15,11 @@ class ModelName(str, Enum):
 app = FastAPI()
 
 
+@app.get("/files/{file_path:path}")
+async def read_file(file_path: str):
+    return {"file_path": file_path.upper()}
+
+
 @app.get("/models/{model_name}")
 async def get_model(model_name: ModelName) -> dict[str, str | ModelName]:
 
