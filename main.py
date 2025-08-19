@@ -16,12 +16,33 @@ class ModelName(str, Enum):
     planet = 234
 
 
-app = FastAPI()
-
-
 def a_big_work():
     for i in range(9999):
         print(i)
+
+
+fake_items_db = [
+    {"item_name": "Foo"},
+    {"item_name": "Bar"},
+    {"item_name": "Baz"},
+]
+
+
+@app.get("/items/")
+async def read_item(skip: int = 0, limit: int = 10):
+    return fake_items_db[skip : skip + limit]
+
+
+@app.get("/items/{item_id}")
+async def read_item2(item_id: str, q: str | None = None, short: bool = False):
+    item = {"item_id": item_id}
+    if q:
+        item.update({"q": f"New_Value_{q}"})
+    if not short:
+        item.update(
+            {"description": "This is an amazing item that has a long description."}
+        )
+    return item
 
 
 @app.get("/files/{file_path:path}")
