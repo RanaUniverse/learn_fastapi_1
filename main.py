@@ -28,6 +28,15 @@ fake_items_db = [
 ]
 
 
+@app.get("/items/{item_id}")
+async def red_user_item2(item_id: str, needy: str):
+    item = {
+        "item_id": item_id,
+        "needy": "This is must need " + needy.upper(),
+    }
+    return item
+
+
 @app.get("/users/{user_id}/items/{item_id}")
 async def read_user_item(
     user_id: int,
