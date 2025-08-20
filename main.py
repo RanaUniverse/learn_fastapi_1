@@ -1,3 +1,5 @@
+import datetime
+
 from enum import Enum
 
 
@@ -30,6 +32,28 @@ fake_items_db = [
     {"item_name": "Bar"},
     {"item_name": "Baz"},
 ]
+
+
+@app.get("/time/")
+async def current_time(after_minute: int | None = None):
+
+    now_time_ind = current_indian_time().strftime("%Y-%m-%d %H:%M:%S.%f")
+    default_dict = {
+        "Country Name": "India 🇮🇳️",
+        "execution_time": now_time_ind,
+    }
+
+    if after_minute:
+        after_time_obj = current_indian_time() + datetime.timedelta(minutes=after_minute)
+        after_time_str = after_time_obj.strftime("%Y-%m-%d %H:%M:%S.%f")
+        after_dict: dict[str, str | int] = {
+            "after_time_in_minute": after_minute,
+            "execution_time": after_time_str,
+        }
+        final_dict = default_dict | after_dict
+        return final_dict
+
+    return default_dict
 
 
 class Item(BaseModel):
