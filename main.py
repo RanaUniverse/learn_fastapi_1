@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 
 
 from pydantic import BaseModel
@@ -40,20 +40,25 @@ class Item(BaseModel):
 
     model_config = {
         # for extra key value in query it will not raise anything, rather use those value
-        # "extra": "allow"
-        # # for extra key value in query it will do nothing   
-        # "extra": "ignore"   
+        "extra": "allow"
+        # # for extra key value in query it will do nothing
+        # "extra": "ignore"
         # for extra key value in query it will reaise 422u
-        "extra": "forbid"   
+        # "extra": "forbid"
     }
     # 👈 new way in Pydantic v2
+
 
 @app.post("/items/")
 async def create_item(
     item: Item,
+    request: Request,
     tax: float | None = None,
-) -> dict[str, str | float | None]:
+    # ) -> dict[str, str | float | None]:
+) -> dict[str, float | int | str | dict[str, str]]:
 
+    query_params = dict(request.query_params)
+    print(query_params)
     # applied_tax = tax if tax is not None else (item.tax or 0)
 
     if tax is not None:
@@ -70,6 +75,8 @@ async def create_item(
         "applied_tax": applied_tax,
         "total_price": total_price,
         "execution_time": current_indian_time().strftime("%Y-%m-%d %H:%M:%S"),
+        # **query_params
+        "query_parameters": query_params,
     }
 
 
