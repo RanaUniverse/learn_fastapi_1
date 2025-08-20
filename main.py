@@ -3,6 +3,7 @@ from enum import Enum
 
 from fastapi import FastAPI
 
+
 from pydantic import BaseModel
 
 
@@ -10,13 +11,6 @@ from my_modules.need_extra import current_indian_time
 
 
 app = FastAPI()
-
-
-class Item(BaseModel):
-    name: str
-    price: float
-    description: str | None = None
-    tax: float | None = None
 
 
 class ModelName(str, Enum):
@@ -37,6 +31,22 @@ fake_items_db = [
     {"item_name": "Baz"},
 ]
 
+
+class Item(BaseModel):
+    name: str
+    price: float
+    description: str | None = None
+    tax: float | None = None
+
+    model_config = {
+        # for extra key value in query it will not raise anything, rather use those value
+        # "extra": "allow"
+        # # for extra key value in query it will do nothing   
+        # "extra": "ignore"   
+        # for extra key value in query it will reaise 422u
+        "extra": "forbid"   
+    }
+    # 👈 new way in Pydantic v2
 
 @app.post("/items/")
 async def create_item(
@@ -59,6 +69,7 @@ async def create_item(
         **item.model_dump(),
         "applied_tax": applied_tax,
         "total_price": total_price,
+        "execution_time": current_indian_time().strftime("%Y-%m-%d %H:%M:%S"),
     }
 
 
